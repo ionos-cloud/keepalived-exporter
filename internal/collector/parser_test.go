@@ -1,6 +1,7 @@
 package collector
 
 import (
+	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -85,8 +86,19 @@ func TestVRRPDataStringToIntState(t *testing.T) {
 	}
 }
 
+func TestV227ParseVRRPData(t *testing.T) {
+	v2ParseVRRPData(t, "v2.2.7")
+}
+
 func TestV215ParseVRRPData(t *testing.T) {
-	f, err := os.Open("../../test_files/v2.1.5/keepalived.data")
+	v2ParseVRRPData(t, "v2.1.5")
+}
+
+// v2ParseVRRPData reads a keepalived.data file for the specified version. The
+// expectation is that the file always contains the same data, just formatted
+// differently.
+func v2ParseVRRPData(t *testing.T, version string) {
+	f, err := os.Open(fmt.Sprintf("../../test_files/%s/keepalived.data", version))
 	if err != nil {
 		t.Log(err)
 		t.Fail()
